@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CORAL BAY — Open-World Crime</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #0a141c; font-family: Arial, Helvetica, sans-serif; color: #fff; }
+  #game { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+  #status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  #hud { display: none; position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+  .cluster { position: absolute; background: rgba(8,20,28,0.72); border: 1px solid rgba(232,200,90,0.5); border-radius: 8px; padding: 8px 10px; }
+  #clusterMinimap { top: 12px; left: 12px; width: 180px; }
+  #minimap { width: 160px; height: 160px; display: block; border-radius: 50%; }
+  #wanted { font-size: 36px; letter-spacing: 2px; line-height: 1; margin-top: 4px; }
+  #wanted .star { color: #555; } #wanted .star.on { color: #ffd23c; text-shadow: 0 0 8px #ffd23c; }
+  #clusterHealth { left: 12px; bottom: 12px; width: 220px; }
+  .bar { height: 12px; background: #333; border-radius: 6px; overflow: hidden; margin: 3px 0; }
+  #healthBar { height: 100%; background: #3ae86a; width: 100%; } #armorBar { height: 100%; background: #5aa0e8; width: 0%; }
+  #clusterObjective { top: 12px; left: 50%; transform: translateX(-50%); text-align: center; min-width: 320px; }
+  #objective { font-size: 20px; font-weight: bold; color: #ffde59; letter-spacing: 1px; }
+  #missionTitle { font-size: 13px; color: #cfe8ff; }
+  #clusterSpeed { right: 12px; bottom: 12px; text-align: right; width: 200px; }
+  #speed { font-size: 28px; font-weight: bold; } #vehicleName { font-size: 13px; color: #cfe8ff; }
+  #clusterRadio { top: 12px; right: 12px; width: 200px; text-align: right; }
+  #radioName { font-size: 14px; font-weight: bold; color: #ff9ad6; } #cash { font-size: 18px; color: #3ae86a; font-weight: bold; }
+  #toast { position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); padding: 10px 18px; border-radius: 8px; font-size: 16px; transition: opacity .4s; }
+  .screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(160deg, #0a2a44, #8a4a2a 60%, #e8a83c); z-index: 10; text-align: center; padding: 20px; }
+  .screen h1 { font-size: 64px; margin: 0; letter-spacing: 4px; text-shadow: 0 4px 20px rgba(0,0,0,.6); }
+  .screen h2 { font-size: 20px; font-weight: normal; color: #ffe9b0; margin: 8px 0 20px; }
+  .screen p { max-width: 640px; line-height: 1.6; }
+  .screen button { pointer-events: auto; font-size: 18px; padding: 12px 28px; margin: 6px; border: none; border-radius: 8px; background: #ff5a3c; color: #fff; cursor: pointer; }
+  .screen button.secondary { background: #2a6a8a; }
+  #endScreen { display: none; }
+  .keys { font-size: 13px; color: #dfe8ff; }
+</style>
+</head>
+<body>
+<canvas id="game" aria-label="Coral Bay: open-world crime game. Drive, steal cars, dodge police, finish 15 missions."></canvas>
+<p id="status" role="status" aria-live="polite"></p>
+<div id="hud">
+  <div class="cluster" id="clusterMinimap"><canvas id="minimap" width="160" height="160"></canvas><div id="wanted"></div><div id="district">Downtown Reef — Coral Bay</div></div>
+  <div class="cluster" id="clusterHealth"><div>HEALTH</div><div class="bar"><div id="healthBar"></div></div><div>ARMOR</div><div class="bar"><div id="armorBar"></div></div></div>
+  <div class="cluster" id="clusterObjective"><div id="missionTitle">M1 · Golden Hour Run</div><div id="objective">DELIVER THE PACKAGE</div></div>
+  <div class="cluster" id="clusterSpeed"><div id="speed">0 km/h</div><div id="vehicleName">Sports</div></div>
+  <div class="cluster" id="clusterRadio"><div id="radioName">CORAL FM 88.1</div><div id="cash">$250</div><div id="clock">Golden Hour</div></div>
+  <div id="toast"></div>
+</div>
+<div class="screen" id="startScreen">
+  <h1>CORAL BAY</h1>
+  <h2>Open-world crime · 15 missions · 3 acts · 5-star police</h2>
+  <p>You are <b>Juno Reyes</b>, ex-courier of the Tidebreakers. Victor Kessler — the Harbor King — owns the marina, the casino, and half the bay. Take it all back, one score at a time, across 7 districts of a sun-soaked coastal city.</p>
+  <p class="keys">WASD drive · Space brake · Shift boost · E enter / steal car · F punch · C crouch · R radio · P pause · M mute</p>
+  <div><button id="startBtn">START — MISSION 1</button><button id="continueBtn" class="secondary" style="display:none">CONTINUE</button></div>
+  <p class="keys">Stealth pays double. Wanted stars bring roadblocks, spikes, and helicopters. Autosaves after every mission.</p>
+</div>
+<div class="screen" id="endScreen">
+  <h1>THE BAY IS YOURS</h1>
+  <h2>Juno Reyes and the Tidebreakers beat Kessler at dawn.</h2>
+  <button id="restartBtn">PLAY AGAIN</button>
+</div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
